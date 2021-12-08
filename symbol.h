@@ -3,12 +3,11 @@
 #include <string.h>
 #include <stdio.h>
 #define NSYMS 100/* maximum number of symbols */
-/*void yyerror2(const char* msg) {
-	fprintf(stderr,"%s\n", msg);
-}*/
+#include <stdbool.h>
 struct symtab {
   char *name;
   double value;
+  int state;
 } symtab[NSYMS];
 //struct symtab *symlook();
 /*struct symtab *symlook(char *s)

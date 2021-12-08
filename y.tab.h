@@ -59,8 +59,10 @@ extern int yydebug;
     NE = 265,
     EXP = 266,
     LOG = 267,
-    UMINUS = 268,
-    UPLUS = 269
+    FAC = 268,
+    MOD = 269,
+    UMINUS = 270,
+    UPLUS = 271
   };
 #endif
 /* Tokens.  */
@@ -74,8 +76,10 @@ extern int yydebug;
 #define NE 265
 #define EXP 266
 #define LOG 267
-#define UMINUS 268
-#define UPLUS 269
+#define FAC 268
+#define MOD 269
+#define UMINUS 270
+#define UPLUS 271
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -87,7 +91,7 @@ union YYSTYPE
                 struct symtab *symp;
         
 
-#line 91 "y.tab.h"
+#line 95 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

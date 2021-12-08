@@ -5,7 +5,7 @@ void yyerror(const char* msg) {
 }
 #include "symbol.h"
 #include <math.h>
-
+double factorial(double);
 int yylex();
 void yyerror(const char *s);
 //double vbltable[26];  /* double형의 기억장소 배열 */
@@ -22,14 +22,14 @@ void yyerror(const char *s);
 %left GE LE EQ NE  
 %left '-' '+'
 %left '*' '/'
-%left EXP LOG
+%left EXP LOG FAC MOD
 %nonassoc UMINUS UPLUS
 %type <dval> expression
 %%
 statement_list: statement '\n'
 	                |         statement_list statement '\n'	
 	;
-statement:        NAME '=' expression  { $1->value = $3; }
+statement:        NAME '=' expression  { $1->value = $3; $1->state=1; }
 	           |   expression                 { printf("= %g\n",$1); }
 ;
 
@@ -57,13 +57,19 @@ expression: expression '+' expression  { $$ = $1 + $3;  }
 //	   |  RIGHT expression {yyerrok; yyerror("parenthesis matching error"); $$=$2;}
 
            |       NUMBER
-           |       NAME       { $$ = $1->value; }
+           |       NAME       { 
+				if ($1->state==-1)
+					yyerror("free ");
+
+				$$ = $1->value; }
 	   | expression '>' expression { $$ = $1 > $3;  }
 	   | expression '<' expression { $$ = $1 < $3;  }
 	   | expression GE  expression { $$ = $1 >= $3; }
 	   | expression LE  expression { $$ = $1 <= $3; }
 	   | expression NE  expression { $$ = $1 != $3; }
 	   | expression EQ  expression { $$ = $1 == $3; }
+	   | expression FAC { $$ = factorial($1); }
+	   | expression MOD expression { $$ = fmod($1, $3); } 
 	   | expression EXP expression { $$ = pow($1, $3);}		     
 	   | LOG expression {  if ($2==0.0) {
 					yyerror("argument zero");
@@ -86,11 +92,23 @@ struct symtab *symlook(char *s)
 			return sp;
 		/* is it free ? */
 		if(!sp->name) {
+			sp->state=-1;
 			sp->name=strdup(s);
 			return sp;
 		}
 		/* otherwise continue to next */
 	}
+	
 	fprintf(stderr, "%s","Too many symbols");
 	exit(1);
 }
+
+double factorial(double tmp){
+	double re = 1;
+	while(tmp > 1) {
+		re = re * tmp;
+		tmp--;
+	}
+	return re;
+}
+
