@@ -29,8 +29,10 @@ extern struct symtab *symlook(char *);
 "^"   return EXP;
 "&"   return LOG;
 
+
 "%"   return MOD;
 "!"   return FAC;
+
 "("   return LEFT;
 ")"   return RIGHT;
 
