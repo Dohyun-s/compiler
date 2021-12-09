@@ -68,14 +68,15 @@ extern int yydebug;
     ERROR = 274,
     NAME = 275,
     NUMBER = 276,
-    LEFT = 277,
-    RIGHT = 278,
-    GE = 279,
-    LE = 280,
-    EQ = 281,
-    NE = 282,
-    UMINUS = 283,
-    UPLUS = 284
+    ADDOP = 277,
+    LEFT = 278,
+    RIGHT = 279,
+    GE = 280,
+    LE = 281,
+    EQ = 282,
+    NE = 283,
+    UMINUS = 284,
+    UPLUS = 285
   };
 #endif
 /* Tokens.  */
@@ -98,26 +99,28 @@ extern int yydebug;
 #define ERROR 274
 #define NAME 275
 #define NUMBER 276
-#define LEFT 277
-#define RIGHT 278
-#define GE 279
-#define LE 280
-#define EQ 281
-#define NE 282
-#define UMINUS 283
-#define UPLUS 284
+#define ADDOP 277
+#define LEFT 278
+#define RIGHT 279
+#define GE 280
+#define LE 281
+#define EQ 282
+#define NE 283
+#define UMINUS 284
+#define UPLUS 285
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 13 "variable.y"
+#line 15 "variable.y"
 
                 double dval;
                 struct symtab *symp;
+		char STRING[100];
         
 
-#line 121 "y.tab.h"
+#line 124 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

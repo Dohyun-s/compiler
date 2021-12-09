@@ -5,7 +5,9 @@ void yyerror(const char* msg) {
 }
 #include "symbol.h"
 #include <math.h>
+#include <string.h>
 double factorial(double);
+float calculate(float num1, float num2, char operation[5]);
 int yylex();
 void yyerror(const char *s);
 //double vbltable[26];  /* double형의 기억장소 배열 */
@@ -13,12 +15,15 @@ void yyerror(const char *s);
 %union  {
                 double dval;
                 struct symtab *symp;
+		char STRING[100];
         }
 %left PI SIN COS TAN CSC SEC COT ASIN ACOS ATAN
 %left E LOG LN EXP FAC MOD
 %left ERROR
 %token    <symp> NAME
 %token    <dval> NUMBER
+%token ADDOP
+%type <STRING> ADDOP
 %left   LEFT
 %right  RIGHT
 %left     '>' '<'
@@ -35,17 +40,17 @@ statement_list: statement '\n'
 statement:        NAME '=' expression  { $1->value = $3; $1->state=1; }
 	           |   expression                 { printf("= %g\n",$1); }
 ;
-
-expression: expression '+' expression  { $$ = $1 + $3;  }
+//addop: '-' | '+';
+//mulop: '*' | '/';
+expression: expression ADDOP expression {$$ = calculate($1, $3,$2); }  	
 	  //	  | expression '+' {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
 //	  | expression '-' {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
 	  | expression '*' expression  { $$ = $1 * $3;  }
-          | expression '-' expression  { $$ = $1 - $3;  }
+         // | expression '-'  expression  { $$ = $1 - $3;  }
           | expression '/' expression
                     {  if($3 == 0.0){
                              yyerror("divide by zero");
 			     return -1;
-
 			}
 
 
@@ -157,3 +162,17 @@ double factorial(double tmp){
 	}
 	return re;
 }
+float calculate(float x, float y, char operation[5]){
+	if(strcmp(operation,"*")==0) return x*y;
+	if(strcmp(operation,"/")==0) return x-y;
+	if(strcmp(operation,"+")==0) return x+y;
+	if(strcmp(operation,"-")==0) return x-y;
+	if(strcmp(operation,"==")==0) return  x ==y;		
+	if(strcmp(operation,"!=")==0) return x != y;		
+	if(strcmp(operation,">=")==0) return x >= y;		
+	if(strcmp(operation,"<=")==0) return x <= y;		
+	if(strcmp(operation,">")==0)  return x > y;		
+	if(strcmp(operation,"<")==0)  return x < y;
+	return 0;
+}
+
