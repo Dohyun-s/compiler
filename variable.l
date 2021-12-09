@@ -3,6 +3,7 @@
 #include "symbol.h"
 #include "y.tab.h"
 #include <math.h>
+#include <string.h>
 #include <stdlib.h>
 extern double vbltable[26];
 extern struct symtab *symlook(char *);
@@ -11,6 +12,7 @@ extern struct symtab *symlook(char *);
 %option nounput
 %option noinput
 %option noyywrap
+addop [+-]
 %%
 ([0-9]+|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?)  {
                   yylval.dval = atof(yytext); return NUMBER;
@@ -28,9 +30,9 @@ m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 "<=" 	return LE;
 "=="    return EQ;
 "!="    return NE;
-
 "^"   return EXP;
 "&"   return LOG;
+{addop} { strcpy(yylval.STRING, yytext); return ADDOP;}
 
 ([Pp]i)|PI	{ yylval.dval = M_PI; return PI;}
 ([Ss]in)|SIN	return SIN;
