@@ -18,7 +18,10 @@ extern struct symtab *symlook(char *);
 
 [\t ]+   ;        /* ignore white space */
 
-[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
+m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
+")("	return ERROR;
+"%"	return MOD;
+"!"	return FAC;
 
 "$"      { return 0; }    /*  end of input  */
 ">="	return GE;
@@ -29,14 +32,26 @@ extern struct symtab *symlook(char *);
 "^"   return EXP;
 "&"   return LOG;
 
+([Pp]i)|PI	{ yylval.dval = M_PI; return PI;}
+([Ss]in)|SIN	return SIN;
+([Cc]os)|COS	return COS;
+([Tt]an)|TAN	return TAN;
+([Cc]sc)|CSC	return CSC;
+([Ss]ec)|SEC	return SEC;
+([Cc]ot)|COT	return COT;
+([Aa]sin)|ASIN	return ASIN;
+([Aa]cos)|ACOS	return ACOS;
+([Aa]tan)|ATAN	return ATAN;
 
-"%"   return MOD;
-"!"   return FAC;
+[Ee]		{ yylval.dval = M_E; return E; }
+([Ll]og)|LOG	return LN;
+([Ll]og10)|LOG10	return LOG;
+
 
 "("   return LEFT;
 ")"   return RIGHT;
 
-\n       |
+[ \n]       |
 .                return yytext[0];
 %%
 /*

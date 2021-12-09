@@ -49,37 +49,63 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NAME = 258,
-    NUMBER = 259,
-    LEFT = 260,
-    RIGHT = 261,
-    GE = 262,
-    LE = 263,
-    EQ = 264,
-    NE = 265,
-    EXP = 266,
-    LOG = 267,
-    FAC = 268,
-    MOD = 269,
-    UMINUS = 270,
-    UPLUS = 271
+    PI = 258,
+    SIN = 259,
+    COS = 260,
+    TAN = 261,
+    CSC = 262,
+    SEC = 263,
+    COT = 264,
+    ASIN = 265,
+    ACOS = 266,
+    ATAN = 267,
+    E = 268,
+    LOG = 269,
+    LN = 270,
+    EXP = 271,
+    FAC = 272,
+    MOD = 273,
+    ERROR = 274,
+    NAME = 275,
+    NUMBER = 276,
+    LEFT = 277,
+    RIGHT = 278,
+    GE = 279,
+    LE = 280,
+    EQ = 281,
+    NE = 282,
+    UMINUS = 283,
+    UPLUS = 284
   };
 #endif
 /* Tokens.  */
-#define NAME 258
-#define NUMBER 259
-#define LEFT 260
-#define RIGHT 261
-#define GE 262
-#define LE 263
-#define EQ 264
-#define NE 265
-#define EXP 266
-#define LOG 267
-#define FAC 268
-#define MOD 269
-#define UMINUS 270
-#define UPLUS 271
+#define PI 258
+#define SIN 259
+#define COS 260
+#define TAN 261
+#define CSC 262
+#define SEC 263
+#define COT 264
+#define ASIN 265
+#define ACOS 266
+#define ATAN 267
+#define E 268
+#define LOG 269
+#define LN 270
+#define EXP 271
+#define FAC 272
+#define MOD 273
+#define ERROR 274
+#define NAME 275
+#define NUMBER 276
+#define LEFT 277
+#define RIGHT 278
+#define GE 279
+#define LE 280
+#define EQ 281
+#define NE 282
+#define UMINUS 283
+#define UPLUS 284
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -91,7 +117,7 @@ union YYSTYPE
                 struct symtab *symp;
         
 
-#line 95 "y.tab.h"
+#line 121 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
