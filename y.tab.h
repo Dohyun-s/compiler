@@ -49,57 +49,57 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PI = 258,
-    SIN = 259,
-    COS = 260,
-    TAN = 261,
-    CSC = 262,
-    SEC = 263,
-    COT = 264,
-    ASIN = 265,
-    ACOS = 266,
-    ATAN = 267,
-    E = 268,
-    LOG = 269,
-    LN = 270,
-    EXP = 271,
-    FAC = 272,
-    MOD = 273,
-    ERROR = 274,
-    NAME = 275,
-    NUMBER = 276,
-    ADDOP = 277,
-    RELOP = 278,
-    LEFT = 279,
-    RIGHT = 280,
+    ERROR = 258,
+    NAME = 259,
+    NUMBER = 260,
+    ADDOP = 261,
+    RELOP = 262,
+    LEFT = 263,
+    RIGHT = 264,
+    LOG = 265,
+    LN = 266,
+    EXP = 267,
+    FAC = 268,
+    MOD = 269,
+    SIN = 270,
+    COS = 271,
+    TAN = 272,
+    CSC = 273,
+    SEC = 274,
+    COT = 275,
+    ASIN = 276,
+    ACOS = 277,
+    ATAN = 278,
+    E = 279,
+    PI = 280,
     UMINUS = 281,
     UPLUS = 282
   };
 #endif
 /* Tokens.  */
-#define PI 258
-#define SIN 259
-#define COS 260
-#define TAN 261
-#define CSC 262
-#define SEC 263
-#define COT 264
-#define ASIN 265
-#define ACOS 266
-#define ATAN 267
-#define E 268
-#define LOG 269
-#define LN 270
-#define EXP 271
-#define FAC 272
-#define MOD 273
-#define ERROR 274
-#define NAME 275
-#define NUMBER 276
-#define ADDOP 277
-#define RELOP 278
-#define LEFT 279
-#define RIGHT 280
+#define ERROR 258
+#define NAME 259
+#define NUMBER 260
+#define ADDOP 261
+#define RELOP 262
+#define LEFT 263
+#define RIGHT 264
+#define LOG 265
+#define LN 266
+#define EXP 267
+#define FAC 268
+#define MOD 269
+#define SIN 270
+#define COS 271
+#define TAN 272
+#define CSC 273
+#define SEC 274
+#define COT 275
+#define ASIN 276
+#define ACOS 277
+#define ATAN 278
+#define E 279
+#define PI 280
 #define UMINUS 281
 #define UPLUS 282
 

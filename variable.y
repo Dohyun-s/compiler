@@ -17,8 +17,6 @@ void yyerror(const char *s);
                 struct symtab *symp;
 		char STRING[100];
         }
-%left PI SIN COS TAN CSC SEC COT ASIN ACOS ATAN
-%left E LOG LN EXP FAC MOD
 %left ERROR
 
 %token    <symp> NAME
@@ -33,8 +31,11 @@ void yyerror(const char *s);
 //%left GE LE EQ NE
 %left RELOP
 %left ADDOP  
+%left LOG LN EXP FAC MOD
 %left '-' '+'
 %left '*' '/'
+%left SIN COS TAN CSC SEC COT ASIN ACOS ATAN
+%left E PI
 %nonassoc UMINUS UPLUS
 %type <dval> expression
 %%
