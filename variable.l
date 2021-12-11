@@ -30,6 +30,7 @@ m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 "=="|">="|"<="|">"|"<"|"!=" { strcpy(yylval.STRING,yytext); return RELOP;}
 "^"   return EXP;
 {addop} { strcpy(yylval.STRING, yytext); return ADDOP;}
+{mulop} { strcpy(yylval.STRING, yytext); return MULOP;}
 
 ([Pp]i)|PI	{ yylval.dval = M_PI; return PI;}
 ([Ss]in)|SIN	return SIN;
