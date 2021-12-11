@@ -26,10 +26,7 @@ m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 "!"	return FAC;
 
 "$"      { return 0; }    /*  end of input  */
-">="	return GE;
-"<=" 	return LE;
-"=="    return EQ;
-"!="    return NE;
+"=="|">="|"<="|">"|"<"|"!=" { strcpy(yylval.STRING,yytext); return RELOP;}
 "^"   return EXP;
 "&"   return LOG;
 {addop} { strcpy(yylval.STRING, yytext); return ADDOP;}
