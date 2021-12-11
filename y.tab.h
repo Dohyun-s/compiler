@@ -54,26 +54,27 @@ extern int yydebug;
     NUMBER = 260,
     ADDOP = 261,
     RELOP = 262,
-    LEFT = 263,
-    RIGHT = 264,
-    LOG = 265,
-    LN = 266,
-    EXP = 267,
-    FAC = 268,
-    MOD = 269,
-    SIN = 270,
-    COS = 271,
-    TAN = 272,
-    CSC = 273,
-    SEC = 274,
-    COT = 275,
-    ASIN = 276,
-    ACOS = 277,
-    ATAN = 278,
-    E = 279,
-    PI = 280,
-    UMINUS = 281,
-    UPLUS = 282
+    MULOP = 263,
+    LEFT = 264,
+    RIGHT = 265,
+    LOG = 266,
+    LN = 267,
+    EXP = 268,
+    FAC = 269,
+    MOD = 270,
+    SIN = 271,
+    COS = 272,
+    TAN = 273,
+    CSC = 274,
+    SEC = 275,
+    COT = 276,
+    ASIN = 277,
+    ACOS = 278,
+    ATAN = 279,
+    E = 280,
+    PI = 281,
+    UMINUS = 282,
+    UPLUS = 283
   };
 #endif
 /* Tokens.  */
@@ -82,26 +83,27 @@ extern int yydebug;
 #define NUMBER 260
 #define ADDOP 261
 #define RELOP 262
-#define LEFT 263
-#define RIGHT 264
-#define LOG 265
-#define LN 266
-#define EXP 267
-#define FAC 268
-#define MOD 269
-#define SIN 270
-#define COS 271
-#define TAN 272
-#define CSC 273
-#define SEC 274
-#define COT 275
-#define ASIN 276
-#define ACOS 277
-#define ATAN 278
-#define E 279
-#define PI 280
-#define UMINUS 281
-#define UPLUS 282
+#define MULOP 263
+#define LEFT 264
+#define RIGHT 265
+#define LOG 266
+#define LN 267
+#define EXP 268
+#define FAC 269
+#define MOD 270
+#define SIN 271
+#define COS 272
+#define TAN 273
+#define CSC 274
+#define SEC 275
+#define COT 276
+#define ASIN 277
+#define ACOS 278
+#define ATAN 279
+#define E 280
+#define PI 281
+#define UMINUS 282
+#define UPLUS 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -114,7 +116,7 @@ union YYSTYPE
 		char STRING[100];
         
 
-#line 118 "y.tab.h"
+#line 120 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -21,8 +21,8 @@ void yyerror(const char *s);
 
 %token    <symp> NAME
 %token    <dval> NUMBER
-%token ADDOP RELOP 
-%type <STRING> ADDOP RELOP 
+%token ADDOP RELOP MULOP 
+%type <STRING> ADDOP RELOP MULOP 
 
 
 %left   LEFT
@@ -30,10 +30,11 @@ void yyerror(const char *s);
 //%left     '>' '<'
 //%left GE LE EQ NE
 %left RELOP
-%left ADDOP  
 %left LOG LN EXP FAC MOD
-%left '-' '+'
-%left '*' '/'
+//%left '-' '+'
+%left ADDOP
+%left MULOP  
+//%left '*' '/'
 %left SIN COS TAN CSC SEC COT ASIN ACOS ATAN
 %left E PI
 %nonassoc UMINUS UPLUS
@@ -50,19 +51,22 @@ statement:        NAME '=' expression  { $1->value = $3; $1->state=1; }
 //mulop: '*' | '/';
 expression: expression ADDOP expression {$$ = calculate($1, $3,$2); }  	
 	  | expression ADDOP {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
-	  | expression '*' expression  { $$ = $1 * $3;  }
+	  | expression MULOP expression {$$ =calculate($1, $3,$2);} 
+	  | expression MULOP {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
+	  | MULOP expression {yyerrok; yyerror("left operator doesn't exist"); $$=$2;}
+	// | expression '*' expression  { $$ = $1 * $3;  }
          // | expression '-'  expression  { $$ = $1 - $3;  }
-          | expression '/' expression
+         /* | expression '/' expression
                     {  if($3 == 0.0){
                              yyerror("divide by zero");
-			     return -1;
+			     
 			}
 
 
                        else   $$ = $1 /$3;
                     }
-	   //|expression op expression { $$ = opr($1, $2, $3);}
-           |  '-'expression  %prec UMINUS   { $$ = -$2; }
+        */  
+	 |  '-'expression  %prec UMINUS   { $$ = -$2; }
 	   |  '+'expression  %prec UPLUS  {$$=$2;}
 	  
 	   |  LEFT expression RIGHT { $$=$2;}
@@ -169,8 +173,8 @@ double factorial(double tmp){
 }
 float calculate(float x, float y, char operation[5]){
 	if(strcmp(operation,"*")==0) return x*y;
-	if(strcmp(operation,"/")==0) return x-y;
-	if(strcmp(operation,"+")==0) return x+y;
+	if(strcmp(operation,"/")==0) {if (y==0) yyerror("divide by zero");return x/y;}
+	if(strcmp(operation,"+")==0) {return x+y;}
 	if(strcmp(operation,"-")==0) return x-y;
 	if(strcmp(operation,"==")==0) return  x ==y;		
 	if(strcmp(operation,"!=")==0) return x != y;		
