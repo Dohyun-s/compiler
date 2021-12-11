@@ -69,14 +69,11 @@ extern int yydebug;
     NAME = 275,
     NUMBER = 276,
     ADDOP = 277,
-    LEFT = 278,
-    RIGHT = 279,
-    GE = 280,
-    LE = 281,
-    EQ = 282,
-    NE = 283,
-    UMINUS = 284,
-    UPLUS = 285
+    RELOP = 278,
+    LEFT = 279,
+    RIGHT = 280,
+    UMINUS = 281,
+    UPLUS = 282
   };
 #endif
 /* Tokens.  */
@@ -100,14 +97,11 @@ extern int yydebug;
 #define NAME 275
 #define NUMBER 276
 #define ADDOP 277
-#define LEFT 278
-#define RIGHT 279
-#define GE 280
-#define LE 281
-#define EQ 282
-#define NE 283
-#define UMINUS 284
-#define UPLUS 285
+#define RELOP 278
+#define LEFT 279
+#define RIGHT 280
+#define UMINUS 281
+#define UPLUS 282
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -120,7 +114,7 @@ union YYSTYPE
 		char STRING[100];
         
 
-#line 124 "y.tab.h"
+#line 118 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
