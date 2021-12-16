@@ -13,7 +13,7 @@ extern struct symtab *symlook(char *);
 %option noinput
 %option noyywrap
 addop [+-]
-mulop [*/]
+mulop [*/%]
 %%
 ([0-9]+|([0-9]*\.[0-9]+)([eE][-+]?[0-9]+)?)  {
                   yylval.dval = atof(yytext); return NUMBER;
@@ -23,7 +23,6 @@ mulop [*/]
 
 m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 ")("	return ERROR;
-"%"	return MOD;
 "!"	return FAC;
 
 "$"      { return 0; }    /*  end of input  */
@@ -36,8 +35,7 @@ m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 ([Ss]in)|SIN|([Cc]os)|COS|([Tt]an)|TAN|([Cc]sc)|CSC|([Ss]ec)|SEC|([Cc]ot)|COT|([Aa]sin)|ASIN|([Aa]cos)|ACOS|([Aa]tan)|ATAN { strcpy(yylval.STRING, yytext); return TRIGO;}	
 
 [Ee]		{ yylval.dval = M_E; return E; }
-([Ll]og)|LOG	return LN;
-([Ll]og10)|LOG10	return LOG;
+([Ll]og)|LOG|([Ll]og10)|LOG10	{strcpy(yylval.STRING, yytext); return LOG;}
 
 
 "("   return LEFT;
