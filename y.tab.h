@@ -55,26 +55,18 @@ extern int yydebug;
     ADDOP = 261,
     RELOP = 262,
     MULOP = 263,
-    LEFT = 264,
-    RIGHT = 265,
-    LOG = 266,
-    LN = 267,
-    EXP = 268,
-    FAC = 269,
-    MOD = 270,
-    SIN = 271,
-    COS = 272,
-    TAN = 273,
-    CSC = 274,
-    SEC = 275,
-    COT = 276,
-    ASIN = 277,
-    ACOS = 278,
-    ATAN = 279,
-    E = 280,
-    PI = 281,
-    UMINUS = 282,
-    UPLUS = 283
+    TRIGO = 264,
+    LEFT = 265,
+    RIGHT = 266,
+    LOG = 267,
+    LN = 268,
+    EXP = 269,
+    FAC = 270,
+    MOD = 271,
+    E = 272,
+    PI = 273,
+    UMINUS = 274,
+    UPLUS = 275
   };
 #endif
 /* Tokens.  */
@@ -84,26 +76,18 @@ extern int yydebug;
 #define ADDOP 261
 #define RELOP 262
 #define MULOP 263
-#define LEFT 264
-#define RIGHT 265
-#define LOG 266
-#define LN 267
-#define EXP 268
-#define FAC 269
-#define MOD 270
-#define SIN 271
-#define COS 272
-#define TAN 273
-#define CSC 274
-#define SEC 275
-#define COT 276
-#define ASIN 277
-#define ACOS 278
-#define ATAN 279
-#define E 280
-#define PI 281
-#define UMINUS 282
-#define UPLUS 283
+#define TRIGO 264
+#define LEFT 265
+#define RIGHT 266
+#define LOG 267
+#define LN 268
+#define EXP 269
+#define FAC 270
+#define MOD 271
+#define E 272
+#define PI 273
+#define UMINUS 274
+#define UPLUS 275
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -116,7 +100,7 @@ union YYSTYPE
 		char STRING[100];
         
 
-#line 120 "y.tab.h"
+#line 104 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

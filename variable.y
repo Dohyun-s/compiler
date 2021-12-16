@@ -22,8 +22,8 @@ void yyerror(const char *s);
 
 %token    <symp> NAME
 %token    <dval> NUMBER
-%token ADDOP RELOP MULOP 
-%type <STRING> ADDOP RELOP MULOP 
+%token ADDOP RELOP MULOP TRIGO
+%type <STRING> ADDOP RELOP MULOP TRIGO
 
 
 %left   LEFT
@@ -36,7 +36,7 @@ void yyerror(const char *s);
 %left ADDOP
 %left MULOP  
 //%left '*' '/'
-%left SIN COS TAN CSC SEC COT ASIN ACOS ATAN
+%left TRIGO
 %left E PI
 %nonassoc UMINUS UPLUS
 %type <dval> expression
@@ -93,34 +93,10 @@ expression: expression ADDOP expression {$$ = calculate($1, $3,$2); }
 	   | expression RELOP {yyerrok; yyerror("right relation operator doesn't exist"); $$=$1;}
 	   | RELOP expression {yyerrok; yyerror("left relation operator doesn't exist"); $$=$2;}
 	   | expression FAC { $$ = factorial($1); }
-	   | SIN expression { $$ = sin($2); }
-	   | COS expression { $$ = cos($2); }
-	   | TAN expression { $$ = tan($2); }
-	   | CSC expression {  if (cos($2) == 0.0) {
-					yyerror("cos is zero");
-					}
-			       else
-					$$ = (1/cos($2)); }
-	   | SEC expression {  if (sin($2) == 0.0) {
-					yyerror("sin argument is zero");
-				 }
-			       else
-					$$ = (1/sin($2)); }
-	   | COT expression {  if (tan($2) == 0.0) {
-					yyerror("tan argument is zero");
-					}
-			       else
-					$$ = (1/tan($2)); }
-	   | ASIN expression { if ($2>1 || $2<-1) {
-					yyerror("asin range error");
-					}
-				else 
-					$$ = asin($2); }
-	   | ACOS expression { if ($2>1 || $2<-1) {
-					yyerror("scos range error");
-					}
-				else
-					$$ = acos($2); }
+	   
+	   | TRIGO expression {$$=calculate2($2, $1);}
+	   | TRIGO {yyerrok; yyerror("only operator, give argument");}
+	   | expression TRIGO {yyerrok; yyerror("only operator, give argument");}
 	   | ATAN expression { return $$ = atan($2);}
 	   | expression MOD expression { $$ = fmod($1, $3); } 
 	   | expression EXP expression { $$ = pow($1, $3);}		     
@@ -188,17 +164,35 @@ float calculate(float x, float y, char operation[5]){
 	if(strcmp(operation,"<=")==0) return x <= y;		
 	if(strcmp(operation,">")==0)  return x > y;		
 	if(strcmp(operation,"<")==0)  return x < y;
+	if(strcmp(operation,"%")==0) return fmod(x,y);
+	if(strcmp(operation,"^")==0) return pow(x,y);
 	return 0;
 }
-/*
+
 float calculate2(float x, char op[5]){
-	if(strcmp(op,"sin")==0  ) return sin(x);
-	if(strcmp(op,"cos")==0  ) return cos(x);
-	if(strcmp(op,"tan")==0  ) return tan(x);
-	if(strcmp(op,"csc")==0  ) return 1/sin(x);
-	if(strcmp(op,"sec")==0  ) return 1/cos(x);
-	if(strcmp(op,"cot")==0  ) return 1/tan(x);
-	if(strcmp(op,"asin")==0 ) return asin(x);
-	if(strcmp(op,"acos")==0 ) return acos(x);
-	if(strcmp(op,"atan")==0 ) return atan(x);
-}*/
+	if(strcmp(op,"sin")==0 ||strcmp(op,"Sin")==0 ||strcmp(op,"SIN")==0  ) {
+		return sin(x);}
+	if(strcmp(op,"cos")==0 ||strcmp(op,"Cos")==0 || strcmp(op,"COS")==0  ) return cos(x);
+	if(strcmp(op,"tan")==0||strcmp(op,"TAN")==0||strcmp(op,"Tan")==0  ) return tan(x);
+	if(strcmp(op,"csc")==0 ||strcmp(op,"Csc")==0 ||strcmp(op,"CSC")==0) {
+		 if (sin(x)==0) 
+			 yyerror("sin argument is zero"); 
+			
+		 else return 1/sin(x);
+	}
+	if(strcmp(op,"sec")==0  ||strcmp(op,"SEC")==0 ||strcmp(op,"Sec")==0  ) {
+		 if (cos(x)==0){  yyerror("cos argument is zero");} else return 1/cos(x);}
+	if(strcmp(op,"cot")==0||strcmp(op,"Cot")==0||strcmp(op,"COT")==0  ) {
+		 if (tan(x)==0)  yyerror("tan argument is zero"); else return 1/tan(x);}
+	if(strcmp(op,"asin")==0||strcmp(op,"ASIN")==0||strcmp(op,"Asin")==0 ){
+		 if (x>1 || x<-1 )  yyerror("asin range error"); else return asin(x);}
+	if(strcmp(op,"acos")==0 ||strcmp(op,"Acos")==0 ||strcmp(op,"ACOS")==0 ) {
+		 if (x>1 || x<-1 )  yyerror("asin range error"); else return acos(x);}
+	if(strcmp(op,"atan")==0 ||strcmp(op,"atan")==0 ||strcmp(op,"atan")==0) return atan(x);
+	
+	if(strcmp(operation,"Log")==0||strcmp(operation,"log")==0||strcmp(operation,"LOG")==)			{if (x==0.0) {yyerror("argument zero");} else return log(x)} 
+	if(strcmp(operation,"Log10")==0||strcmp(operation,"log10")==0||strcmp(operation,"LOG10")==)			{if (x==0.0) {yyerror("argument zero");} else return log10(x)} 
+	return 0;
+}
+
+

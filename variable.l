@@ -33,15 +33,7 @@ m[A-Za-z][A-Za-z0-9]*    {      yylval.symp=symlook(yytext); return NAME; }
 {mulop} { strcpy(yylval.STRING, yytext); return MULOP;}
 
 ([Pp]i)|PI	{ yylval.dval = M_PI; return PI;}
-([Ss]in)|SIN	return SIN;
-([Cc]os)|COS	return COS;
-([Tt]an)|TAN	return TAN;
-([Cc]sc)|CSC	return CSC;
-([Ss]ec)|SEC	return SEC;
-([Cc]ot)|COT	return COT;
-([Aa]sin)|ASIN	return ASIN;
-([Aa]cos)|ACOS	return ACOS;
-([Aa]tan)|ATAN	return ATAN;
+([Ss]in)|SIN|([Cc]os)|COS|([Tt]an)|TAN|([Cc]sc)|CSC|([Ss]ec)|SEC|([Cc]ot)|COT|([Aa]sin)|ASIN|([Aa]cos)|ACOS|([Aa]tan)|ATAN { strcpy(yylval.STRING, yytext); return TRIGO;}	
 
 [Ee]		{ yylval.dval = M_E; return E; }
 ([Ll]og)|LOG	return LN;
