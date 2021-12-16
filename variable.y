@@ -1,5 +1,17 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#define type(x) _Generic((x),                                                     \
+        _Bool: "_Bool",                  unsigned char: "unsigned char",          \
+         char: "char",                     signed char: "signed char",            \
+    short int: "short int",         unsigned short int: "unsigned short int",     \
+          int: "int",                     unsigned int: "unsigned int",           \
+     long int: "long int",           unsigned long int: "unsigned long int",      \
+long long int: "long long int", unsigned long long int: "unsigned long long int", \
+        float: "float",                         double: "double",                 \
+  long double: "long double",                   char *: "char *",                 \
+       void *: "void *",                         int *: "int *",                  \
+      default: "unknown")
 void yyerror(const char* msg) {
 	fprintf(stderr, "%s\n", msg);
 }
@@ -22,8 +34,8 @@ void yyerror(const char *s);
 
 %token    <symp> NAME
 %token    <dval> NUMBER
-%token ADDOP RELOP MULOP TRIGO
-%type <STRING> ADDOP RELOP MULOP TRIGO
+%token ADDOP RELOP MULOP TRIGO LOG
+%type <STRING> ADDOP RELOP MULOP TRIGO LOG
 
 
 %left   LEFT
@@ -31,12 +43,12 @@ void yyerror(const char *s);
 //%left     '>' '<'
 //%left GE LE EQ NE
 %left RELOP
-%left LOG LN EXP FAC MOD
 //%left '-' '+'
 %left ADDOP
 %left MULOP  
 //%left '*' '/'
-%left TRIGO
+%left LOG LN EXP TRIGO
+%left FAC
 %left E PI
 %nonassoc UMINUS UPLUS
 %type <dval> expression
@@ -50,32 +62,23 @@ statement:        NAME '=' expression  { $1->value = $3; $1->state=1; }
 ;
 //addop: '-' | '+';
 //mulop: '*' | '/';
-expression: expression ADDOP expression {$$ = calculate($1, $3,$2); }  	
-	  | expression ADDOP {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
+expression: expression ADDOP expression 
+	  {
+	if (strcmp(type($1),"float")!=0 && strcmp(type($1),"double")!=0) {printf("%s",type($1));yyerror("not float");}
+//	if (strcmp(*($1),"m")!==0) {yyerror("not float");}
+	$$ = calculate($1, $3,$2);   	
+	} 
+	  | expression ADDOP {yyerrok; yyerror("+ right operator doesn't exist"); $$=$1;}
 	  | expression MULOP expression {$$ =calculate($1, $3,$2);} 
+	  | MULOP expression {yyerrok; yyerror("* left operator doesn't exist"); $$=$2; }
 	  | expression MULOP {yyerrok; yyerror("right operator doesn't exist"); $$=$1;}
-	  | MULOP expression {yyerrok; yyerror("left operator doesn't exist"); $$=$2;}
-	// | expression '*' expression  { $$ = $1 * $3;  }
-         // | expression '-'  expression  { $$ = $1 - $3;  }
-         /* | expression '/' expression
-                    {  if($3 == 0.0){
-                             yyerror("divide by zero");
-			     
-			}
-
-
-                       else   $$ = $1 /$3;
-                    }
-        */  
 	 |  '-'expression  %prec UMINUS   { $$ = -$2; }
 	   |  '+'expression  %prec UPLUS  {$$=$2;}
-	  
+	   //|  MULOP error { yyerror("error with mulop"); } 
 	   |  LEFT expression RIGHT { $$=$2;}
 	   |  LEFT RIGHT { yyerrok; yyerror("Blank In the parenthesis error");}
 	   |  LEFT expression   { yyerrok; yyerror("Right parenthesis missing error"); $$=$2; }
-//	   |  expression LEFT   { yyerrok; yyerror("parenthesis matching error"); $$=$1; }
-	   |  expression RIGHT { yyerrok; yyerror("Left parenthesis missing error"); $$=$1;}
-//	   |  RIGHT expression {yyerrok; yyerror("parenthesis matching error"); $$=$2;}
+	   |  RIGHT expression {yyerrok; yyerror("parenthesis matching error"); $$=$2;}
 
            |       NUMBER
            |       NAME       { 
@@ -87,37 +90,31 @@ expression: expression ADDOP expression {$$ = calculate($1, $3,$2); }
 	   |	   E
 	   |	   PI
 	   | expression RELOP expression {$$=calculate($1,$3,$2);}
-	   | RELOP {yyerrok; yyerror("only operator, give values");} 
-	   | ADDOP {yyerrok; yyerror("only operator, give values");} 
-	   | MULOP {yyerrok; yyerror("only operator, give values");} 
 	   | expression RELOP {yyerrok; yyerror("right relation operator doesn't exist"); $$=$1;}
 	   | RELOP expression {yyerrok; yyerror("left relation operator doesn't exist"); $$=$2;}
 	   | expression FAC { $$ = factorial($1); }
-	   
+	   	   
 	   | TRIGO expression {$$=calculate2($2, $1);}
 	   | TRIGO {yyerrok; yyerror("only operator, give argument");}
 	   | expression TRIGO {yyerrok; yyerror("only operator, give argument");}
-	   | ATAN expression { return $$ = atan($2);}
-	   | expression MOD expression { $$ = fmod($1, $3); } 
+
 	   | expression EXP expression { $$ = pow($1, $3);}		     
-	   | LOG expression {  if ($2==0.0) {
-					yyerror("argument zero");
-					}
-			       else
-			 	$$ = log10($2);}
-	   | LN expression { if ($2==0.0) {
-					yyerror("argument zero");
-					}
-				else
-				$$ = log($2); }	
+	   | LOG expression {$$=calculate2($2,$1);}
+
 	   | expression ERROR expression { yyerror("parenthesis error"); return -1; }
 	   | expression ERROR { yyerror("parenthesis error"); return -1; }
 	   | ERROR expression { yyerror("parenthesis error"); return -1; }
+	   
 	   | LEFT { yyerror("parenthesis alone"); }
 	   | RIGHT { yyerror("parenthesis alone"); }
 	   | ADDOP { yyerror("addop alone"); }
 	   | MULOP { yyerror("mulop alone"); }
 	   | RELOP { yyerror("relop alone");}
+	   | FAC {yyerror("factorial alone");}
+	   | EXP {yyerror("exponential alone");}
+	   | LOG {yyerror("lognantial alone");}
+	   | expression {$$=$1;}
+	    
 ;
 %%
 int main()
@@ -154,7 +151,7 @@ double factorial(double tmp){
 	return re;
 }
 float calculate(float x, float y, char operation[5]){
-	if(strcmp(operation,"*")==0) return x*y;
+	if(strcmp(operation,"*")==0) {return x*y;}
 	if(strcmp(operation,"/")==0) {if (y==0) yyerror("divide by zero");return x/y;}
 	if(strcmp(operation,"+")==0) {return x+y;}
 	if(strcmp(operation,"-")==0) return x-y;
@@ -190,8 +187,8 @@ float calculate2(float x, char op[5]){
 		 if (x>1 || x<-1 )  yyerror("asin range error"); else return acos(x);}
 	if(strcmp(op,"atan")==0 ||strcmp(op,"atan")==0 ||strcmp(op,"atan")==0) return atan(x);
 	
-	if(strcmp(operation,"Log")==0||strcmp(operation,"log")==0||strcmp(operation,"LOG")==)			{if (x==0.0) {yyerror("argument zero");} else return log(x)} 
-	if(strcmp(operation,"Log10")==0||strcmp(operation,"log10")==0||strcmp(operation,"LOG10")==)			{if (x==0.0) {yyerror("argument zero");} else return log10(x)} 
+	if(strcmp(op,"Log")==0||strcmp(op,"log")==0||strcmp(op,"LOG")==0)			{if (x==0.0) {yyerror("argument zero");} else return log(x);} 
+	if(strcmp(op,"Log10")==0||strcmp(op,"log10")==0||strcmp(op,"LOG10")==0)	{if (x==0.0) {yyerror("argument zero");} else return log10(x);} 
 	return 0;
 }
 

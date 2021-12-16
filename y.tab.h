@@ -56,17 +56,16 @@ extern int yydebug;
     RELOP = 262,
     MULOP = 263,
     TRIGO = 264,
-    LEFT = 265,
-    RIGHT = 266,
-    LOG = 267,
+    LOG = 265,
+    LEFT = 266,
+    RIGHT = 267,
     LN = 268,
     EXP = 269,
     FAC = 270,
-    MOD = 271,
-    E = 272,
-    PI = 273,
-    UMINUS = 274,
-    UPLUS = 275
+    E = 271,
+    PI = 272,
+    UMINUS = 273,
+    UPLUS = 274
   };
 #endif
 /* Tokens.  */
@@ -77,30 +76,29 @@ extern int yydebug;
 #define RELOP 262
 #define MULOP 263
 #define TRIGO 264
-#define LEFT 265
-#define RIGHT 266
-#define LOG 267
+#define LOG 265
+#define LEFT 266
+#define RIGHT 267
 #define LN 268
 #define EXP 269
 #define FAC 270
-#define MOD 271
-#define E 272
-#define PI 273
-#define UMINUS 274
-#define UPLUS 275
+#define E 271
+#define PI 272
+#define UMINUS 273
+#define UPLUS 274
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 16 "variable.y"
+#line 28 "variable.y"
 
                 double dval;
                 struct symtab *symp;
 		char STRING[100];
         
 
-#line 104 "y.tab.h"
+#line 102 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
